@@ -1,0 +1,12 @@
+{% extends "challenges/base.html" %}
+
+{% block content %}
+
+<h2>Published Challenges</h2>
+{% for c in challenge_list %}
+    <div class="list-item"><span>
+        <a href="{% url 'challenge_view' c.pk %}">{{ c.name }}</a>
+    </span></div>
+{% endfor %}
+
+{% endblock %}

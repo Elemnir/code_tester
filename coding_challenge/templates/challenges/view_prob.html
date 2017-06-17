@@ -1,0 +1,57 @@
+{% extends "challenges/base.html" %}
+
+{% block head %}
+<script type="text/javascript" src="/static/edit_area/edit_area_full.js"></script>
+<script type="text/javascript">
+    editAreaLoader.init({
+        id: "code_window", // id of the textarea to transform      
+        start_highlight: true,  // if start with highlight
+        allow_resize: "both",
+        allow_toggle: false,
+        language: "en",
+        syntax: "Python",
+        replace_tab_by_spaces: 4,
+    });
+</script>
+{% endblock%}
+
+{% block content %}
+
+<br>
+<div class="bubble">
+    <h2>{{ challenge.name }}</h2>
+    {{ challenge.render_description | safe }}
+</div>
+
+<br>
+
+{% if failed %}
+    {% for fail in failed %}
+    <div class="bubble">
+      <h3>Failed Test: <code>{{fail.debug_text}}</code></h3>
+      <p><strong>Correct Output:</strong> {{fail.correct_out}}</p>
+      <p><strong>Your Output:</strong> {{fail.test_out}}</p>
+    </div>
+    <br>
+    {% endfor %}
+{% endif %}
+
+{% if attempt.passed %}
+<div class="bubble">
+    <span>You've completed this challenge!</span>
+</div>
+<br>
+{% endif%}
+
+<form method="post">
+    {% csrf_token %}
+    <div class="field-wrapper">
+        <textarea id="code_window" name="submission" cols=80 rows=24>{{ attempt.submission }}</textarea>
+    </div>
+    <div class="field-wrapper">
+      <p style="text-align:center;">
+        <input class="bubble" type="submit" value="Test Your Code">
+      </p>
+    </div>
+</form>
+{% endblock %}

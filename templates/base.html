@@ -1,0 +1,60 @@
+<!DOCTYPE html> 
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>{% block title %}HITES11 Code Tester{% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="/static/style.css">
+    <!--<link rel="shortcut icon"  href="/static/favicon.ico">-->
+    {% block head %}
+    {% endblock %}
+  </head>
+
+  <body>
+    <div id="wrap">
+      <div id="header">
+      {% block header %}
+        <h1>HITES11 Code Tester</h1>
+      {% endblock %}
+      </div>
+
+      <div id="navbar">
+      {% block nav %}
+        <ul class='links'>
+        {% for item, sublist in nav_menu %}
+          <li><a class="bubble" href="{{ item.url }}">{{ item.name }}</a></li>
+          {% if sublist %}
+            <ul>
+            {% for sitem in sublist %}
+              <li><a class="bubble" href="{{ sitem.url }}">{{ sitem.name }}</a></li>
+            {% endfor %}
+            </ul>
+          {% endif %}
+        {% endfor %}
+        </ul>
+        <ul class='accountlinks'>
+          {% if user.is_authenticated %}
+            <li>Signed in as {{ user.username }}</li>
+            <!--<li><a class="bubble" href="/accounts/profile/">{{ user.username }}</a></li>-->
+            <li><a class="bubble" href="/accounts/logout/">Log Out</a></li>
+          {% else %}
+            <li><a class="bubble" href="/accounts/login/">Login</a></li>
+            <li><a class="bubble" href="/accounts/register/">Register</a></li>
+          {% endif %}
+        </ul>
+      {% endblock %}
+      </div>
+        
+      <div id="content">
+        {% block content %}
+        {% endblock %}
+        <br>
+      </div>
+
+      <div id="footer" class="bubble">
+        {% block footer %}
+          <p>Copyright (c) Adam Howard</p>
+        {% endblock %}
+      </div>
+    </div>
+  </body>
+</html>
