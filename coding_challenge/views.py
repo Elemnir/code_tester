@@ -35,6 +35,7 @@ class ViewChallenge(LoginRequiredMixin, View):
         failed = challenge.run_tests(attempt)
         if not failed:
             attempt.pass_time = timezone.now()
+            attempt.earned_pts = attempt.calc_points()
             attempt.passed = True
         attempt.save()
         

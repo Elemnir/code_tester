@@ -12,6 +12,7 @@ class Challenge(models.Model):
     name        = models.CharField(max_length=200)
     description = models.TextField()
     solution    = models.TextField()
+    points      = models.IntegerField(default=0)
     author_date = models.DateTimeField(auto_now_add=True)
     pub_date    = models.DateTimeField(null=True, blank=True)
     ispublished = models.BooleanField(default=False)
@@ -57,7 +58,9 @@ class ChallengeTest(models.Model):
         """Run the given source in the ChallengeTest's harness."""
         try:
             handle = tempfile.NamedTemporaryFile(delete=False)
-            handle.write(self.harness.format(source).encode('utf-8'))
+            handle.write(
+                self.harness.replace("$CODE$", source).encode('utf-8')
+            )
             handle.close()
             output = subprocess.check_output(
                 ["python3", handle.name], 
@@ -79,7 +82,11 @@ class ChallengeAttempt(models.Model):
     open_time   = models.DateTimeField(auto_now_add=True)
     pass_time   = models.DateTimeField(null=True, blank=True)
     passed      = models.BooleanField(blank=True, default=False)
+    earned_pts  = models.IntegerField(blank=True, default=0)
     submission  = models.TextField()
     
     def __str__(self):
         return str(self.challenge) + ' - ' + str(self.submitter)
+
+    def calc_points(self):
+        return 0;
