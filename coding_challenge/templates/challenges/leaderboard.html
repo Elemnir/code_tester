@@ -1,0 +1,44 @@
+{% extends "challenges/base.html" %}
+
+{% block head %}
+<style>
+table, th, td {
+    border: 1px solid black;
+}
+</style>
+{% endblock%}
+
+{% block content %}
+
+<h2>Challenge Leaderboards</h2>
+
+<table>
+    <tr>
+        <th>Username</th>
+        <th>Total Points Earned</th>
+    </tr>
+    {% for user in user_scores %}
+    <tr>
+        <td>{{ user.username }}</td>
+        <td>{{ user.total_points }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% if is_paginated %}
+<div class="pagination">
+    <span class="page-links">
+        {% if page_obj.has_previous %}
+        <a href="{% url "challenge_rank" %}?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+        <span class="page-current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+        {% if page_obj.has_next %}
+        <a href="{% url "challenge_rank" %}?page={{ page_obj.next_page_number }}">next</a>
+        {% endif %}
+    </span>
+</div>
+{% endif %}
+
+{% endblock %}

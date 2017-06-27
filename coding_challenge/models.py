@@ -89,4 +89,15 @@ class ChallengeAttempt(models.Model):
         return str(self.challenge) + ' - ' + str(self.submitter)
 
     def calc_points(self):
-        return 0;
+        """Calculate how many points the attempt is worth"""
+        if self.earned_pts != 0:
+            return self.earned_pts
+        tdiff = self.pass_time - self.open_time
+        tdiff -= datetime.timedelta(minutes=5)
+        max_pts = self.challenge.points
+        if tdiff < datetime.timedelta():
+            return max_pts
+        return max(
+            int(max_pts * 0.15), 
+            int(max_pts * (1 - tdiff / datetime.timedelta(hours=3)))
+        )

@@ -15,16 +15,16 @@ class ChallengeAdmin(admin.ModelAdmin):
     class Meta:
         model = Challenge
     actions = [publish_challenges]
-    fields  = ['name','description','solution']
+    fields  = ['name','points','description','solution']
     inlines = [ChallengeTestInline]
-    list_display = ('name', 'ispublished', 'pub_date')
+    list_display = ('name','points','ispublished','pub_date')
 admin.site.register(Challenge, ChallengeAdmin)
 
 
 class ChallengeTestAdmin(admin.ModelAdmin):
     class Meta:
         model = ChallengeTest
-admin.site.register(ChallengeTest, ChallengeTestAdmin)
+#admin.site.register(ChallengeTest, ChallengeTestAdmin)
 
 
 class ChallengeAttemptAdmin(admin.ModelAdmin):
