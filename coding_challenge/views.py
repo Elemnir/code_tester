@@ -8,19 +8,22 @@ from django.views.generic       import ListView
 
 from .models    import Challenge, ChallengeTest, ChallengeAttempt
 
+
 class ChallengeList(ListView):
     context_object_name = "challenge_list"
     queryset = Challenge.objects.filter(ispublished=True).order_by('-pub_date')
     template_name = "challenges/pub_list.html"
     paginate_by = 25
 
+
 class LeaderBoard(ListView):
     context_object_name = "user_scores"
     queryset = User.objects.annotate(
         total_points=Sum('challengeattempt__earned_pts')
-    ).filter(total_points__gt=0)
+    ).filter(total_points__gt=0).order_by('-total_points')
     template_name = "challenges/leaderboard.html"
     paginate_by = 25
+
 
 class ViewChallenge(LoginRequiredMixin, View):
     def get(self, request, cid):
