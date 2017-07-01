@@ -1,60 +1,87 @@
 <!DOCTYPE html> 
 <html lang="en">
   <head>
-    <meta charset="utf-8">
     <title>{% block title %}HITES11 Code Tester{% endblock %}</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link rel="stylesheet" type="text/css" href="/static/style.css">
     <!--<link rel="shortcut icon"  href="/static/favicon.ico">-->
+    
     {% block head %}
     {% endblock %}
   </head>
 
   <body>
     <div id="wrap">
-      <div id="header">
-      {% block header %}
-        <h1>HITES11 Code Tester</h1>
-      {% endblock %}
-      </div>
-
-      <div id="navbar">
+      <nav class="navbar navbar-inverse">
       {% block nav %}
-        <ul class='links'>
-        {% for item, sublist in nav_menu %}
-          <li><a class="bubble" href="{{ item.url }}">{{ item.name }}</a></li>
-          {% if sublist %}
-            <ul>
-            {% for sitem in sublist %}
-              <li><a class="bubble" href="{{ sitem.url }}">{{ sitem.name }}</a></li>
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>                        
+            </button>
+            <a class="navbar-brand" href="/">HITES11 Code Tester</a>
+          </div>
+          <div class="collapse navbar-collapse" id="myNavbar">
+            <ul class='nav navbar-nav'>
+            {% for item, sublist in nav_menu %}
+              {% if sublist %}
+                <li class="dropdown">
+                  <a class="dropdown-toggle" data-toggle="dropdown" href="{{ item.url }}">
+                    {{ item.name }}<span class="caret"></span>
+                  </a>
+                </li>
+                <ul class="dropdown-menu">
+                {% for sitem in sublist %}
+                  <li><a href="{{ sitem.url }}">{{ sitem.name }}</a></li>
+                {% endfor %}
+                </ul>
+              {% else %}
+                <li><a href="{{ item.url }}">{{ item.name }}</a></li>
+              {% endif %}
             {% endfor %}
             </ul>
-          {% endif %}
-        {% endfor %}
-        </ul>
-        <ul class='accountlinks'>
-          {% if user.is_authenticated %}
-            <li>Signed in as {{ user.username }}</li>
-            <!--<li><a class="bubble" href="/accounts/profile/">{{ user.username }}</a></li>-->
-            <li><a class="bubble" href="/accounts/logout/">Log Out</a></li>
-          {% else %}
-            <li><a class="bubble" href="/accounts/login/">Login</a></li>
-            <li><a class="bubble" href="/accounts/register/">Register</a></li>
-          {% endif %}
-        </ul>
+            <ul class='nav navbar-nav navbar-right'>
+            {% if user.is_authenticated %}
+              <li><a href="/accounts/profile/">
+                <span class="glyphicon glyphicon-user"></span> {{ user.username }}
+              </a></li>
+              <li><a href="/accounts/logout/">
+                <span class="glyphicon glyphicon-log-out"></span> Log Out
+              </a></li>
+            {% else %}
+              <li><a href="/accounts/register/">
+                <span class="glyphicon glyphicon-user"></span> Register
+              </a></li>
+              <li><a href="/accounts/login/">
+                <span class="glyphicon glyphicon-log-in"></span> Login
+              </a></li>
+            {% endif %}
+            </ul>
+          </div>
+        </div>
       {% endblock %}
+      </nav>
+    
+      <div id="content" class="container-fluid">      
+        <div class="row content">
+          {% block content %}
+          {% endblock %}
+          <br>
+        </div>
       </div>
-        
-      <div id="content">
-        {% block content %}
-        {% endblock %}
-        <br>
-      </div>
-
-      <div id="footer" class="bubble">
-        {% block footer %}
-          <p>Copyright (c) Adam Howard</p>
-        {% endblock %}
-      </div>
+    
+      <footer>
+      {% block footer %}
+        <p>Copyright (c) Adam Howard</p>
+      {% endblock %}
+      </footer>
     </div>
   </body>
 </html>

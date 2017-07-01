@@ -1,7 +1,11 @@
 {% extends "challenges/base.html" %}
 
+
 {% block head %}
-<script type="text/javascript" src="/static/edit_area/edit_area_full.js"></script>
+
+<script type="text/javascript" src="/static/edit_area/edit_area_full.js">
+</script>
+
 <script type="text/javascript">
     editAreaLoader.init({
         id: "code_window", // id of the textarea to transform      
@@ -13,45 +17,56 @@
         replace_tab_by_spaces: 4,
     });
 </script>
+
 {% endblock%}
+
 
 {% block content %}
 
-<br>
-<div class="bubble">
-    <h2>{{ challenge.name }}</h2>
-    {{ challenge.render_description | safe }}
+<div class="page-header">
+  <h1>{{ challenge.name }}</h1>
 </div>
 
-<br>
+<div class="panel panel-default">
+  <div class="panel-body">
+    {{ challenge.render_description | safe }}
+  </div>
+</div>
 
 {% if failed %}
-    {% for fail in failed %}
-    <div class="bubble">
-      <h3>Failed Test: <code>{{fail.debug_text}}</code></h3>
-      <p><strong>Correct Output:</strong> {{fail.correct_out}}</p>
-      <p><strong>Your Output:</strong> {{fail.test_out}}</p>
+  <div class="panel-group">
+  {% for fail in failed %}
+    <div class="panel panel-danger">
+      <div class="panel-heading">
+        Failed Test: <code>{{fail.debug_text}}</code>
+      </div>
+      <div class="panel-body">
+        <p><strong>Correct Output:</strong> {{fail.correct_out}}</p>
+        <p><strong>Your Output:</strong> {{fail.test_out}}</p>
+      </div>
     </div>
-    <br>
-    {% endfor %}
+  {% endfor %}
+  </div>
 {% endif %}
 
 {% if attempt.passed %}
-<div class="bubble">
-    <span>You've completed this challenge!</span>
-</div>
-<br>
+  <div class="alert alert-success">
+    <span>You've completed this challenge and scored {{ attempt.earned_pts }}
+    points!</span>
+  </div>
 {% endif%}
 
 <form method="post">
-    {% csrf_token %}
-    <div class="field-wrapper">
-        <textarea id="code_window" name="submission" cols=80 rows=24>{{ attempt.submission }}</textarea>
-    </div>
-    <div class="field-wrapper">
-      <p style="text-align:center;">
-        <input class="bubble" type="submit" value="Test Your Code">
-      </p>
-    </div>
+  {% csrf_token %}
+  <div class="field-wrapper" style="text-align:center;">
+    <textarea id="code_window" name="submission" cols=80 rows=24>{{ attempt.submission }}</textarea>
+  </div>
+  <br>
+  <div class="field-wrapper">
+    <p style="text-align:center;">
+      <input class="btn btn-primary" type="submit" value="Test Your Code">
+    </p>
+  </div>
 </form>
+
 {% endblock %}

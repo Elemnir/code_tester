@@ -1,13 +1,33 @@
 {% extends "challenges/base.html" %}
 
+
 {% block content %}
 
-<h2>Published Challenges</h2>
-{% for c in challenge_list %}
-    <div class="list-item"><span>
-        <a href="{% url 'challenge_view' c.pk %}">{{ c.name }}</a>
-    </span></div>
-{% endfor %}
+<div class="page-header">
+  <h1>Published Challenges</h1>
+</div>
+
+<div class="row">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Points</th>
+        <th>Published Date</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for c in challenge_list %}
+      <tr>
+        <td><a href="{% url 'challenge_view' c.pk %}">{{ c.name }}</a></td>
+        <td>{{ c.points }}</td>
+        <td>{{ c.pub_date }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+
 
 {% if is_paginated %}
 <div class="pagination">
