@@ -1,10 +1,9 @@
-from django.conf.urls           import url
-from django.contrib.auth.views  import LoginView, LogoutView
+from django.conf.urls   import include, url
 
-from .views import register
+from .views import Profile, Register
 
 urlpatterns = [
-    url(r"^login/$",    LoginView.as_view(),    name='accounts_login'),
-    url(r"^logout/$",   LogoutView.as_view(),   name='accounts_logout'),
-    url(r"^register/$", register,               name='accounts_register'),
+    url(r"^", include('django.contrib.auth.urls')),
+    url(r"^profile/$",  Profile.as_view(),  name='accounts_profile'),
+    url(r"^register/$", Register.as_view(), name='accounts_register'),
 ]

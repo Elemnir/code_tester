@@ -3,31 +3,39 @@
 {% block title %}{{ block.super }} - Register{% endblock %}
 
 {% block content %}
-<h2>Create an Account</h2>
+<div class="page-header">
+  <h1>Create an Account</h1>
+</div>
 
-<form action="" method="post">
-{% csrf_token %}
-    <div class="fieldWrapper">
-        <label class="formField" for="id_username">Email Address:</label><br>
-        {{ form.username.errors }}
-        {{ form.username }}
-    </div>
-    <br>
-    <div class="fieldWrapper">
-        <label class="formField" for="id_password1">Password:</label><br>
-        {{ form.password1.errors }}
-        {{ form.password1 }}
-    </div>
-    <br>
-    <div class="fieldWrapper">
-        <label class="formField" for="id_password2">Password (Again):</label><br>
-        {{ form.password2.errors }}
-        {{ form.password2 }}
-    </div>
-    <br>
-    <div class="fieldWrapper">    
-        <input type="submit" value="Register"/>
-    </div>
+<form class="form-horizontal" action="" method="post">
+  {% csrf_token %}
+  <div class="form-group {% if form.username.errors %}has-error{% endif %}">
+    <label class="sr-only" for="id_username">Username:</label>
+    {% for error in form.username.errors %}
+      <div class="alert alert-danger">{{ error }}</div>
+    {% endfor %}
+    <input type="text" class="form-control" id="id_username" name="username" placeholder="Desired Username"> 
+  </div>
+  
+  <div class="form-group {% if form.password1.errors %}has-error{% endif %}">
+    <label class="sr-only" for="id_password1">Password:</label>
+    {% for error in form.password1.errors %}
+      <div class="alert alert-danger">{{ error }}</div>
+    {% endfor %}
+    <input type="password" class="form-control" id="id_password1" name="password1" placeholder="Password"> 
+  </div>
+  
+  <div class="form-group {% if form.password2.errors %}has-error{% endif %}">
+    <label class="sr-only" for="id_password2">Confirm Password:</label>
+    {% for error in form.password2.errors %}
+      <div class="alert alert-danger">{{ error }}</div>
+    {% endfor %}
+    <input type="password" class="form-control" id="id_password2" name="password2" placeholder="Confirm Password"> 
+  </div>
+  
+  <div class="form-group" style="text-align:center;">    
+    <button type="submit" class="btn btn-primary">Register</button>
+  </div>
 </form>
 
 {% endblock %}
