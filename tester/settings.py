@@ -25,7 +25,10 @@ SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['ahoward0920.asuscomm.com']
+ALLOWED_HOSTS = [
+    'www.adamphoward.com',
+    'ahoward0920.asuscomm.com',
+]
 
 
 # Application definition
