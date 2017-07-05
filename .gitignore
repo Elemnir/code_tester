@@ -1,5 +1,5 @@
 venv/
-staticfiles/
+static/
 db.sqlite3
 config.sh
 *.pyc
