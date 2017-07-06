@@ -13,6 +13,7 @@ class Challenge(models.Model):
     description = models.TextField()
     solution    = models.TextField()
     points      = models.IntegerField(default=0)
+    author      = models.ForeignKey(User)
     author_date = models.DateTimeField(auto_now_add=True)
     pub_date    = models.DateTimeField(null=True, blank=True)
     ispublished = models.BooleanField(default=False)
