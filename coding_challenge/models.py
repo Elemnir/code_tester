@@ -24,11 +24,17 @@ class Challenge(models.Model):
     def render_description(self):
         """Returns the Challenge's markdown description rendered as html."""
         return markdown.markdown(self.description)
-        
+    
     def publish(self):
         """Mark the Challenge for publishing."""
         self.ispublished = True
         self.pub_date = datetime.datetime.now()
+        self.save()
+  
+    def unpublish(self):
+        """Hide the Challenge from normal users."""
+        self.ispublished = False
+        self.pub_date = None
         self.save()
 
     def run_tests(self, attempt):
