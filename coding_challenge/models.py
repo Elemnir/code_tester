@@ -42,8 +42,8 @@ class Challenge(models.Model):
         tests = ChallengeTest.objects.filter(challenge=self)
         failed = []
         for test in tests:
-            sample_out  = test.run_test(attempt.submission).decode('utf-8')
-            correct_out = test.run_test(self.solution).decode('utf-8')
+            sample_out  = test.run_test(attempt.submission)
+            correct_out = test.run_test(self.solution)
             if sample_out != correct_out:
                 failed.append({
                     'debug_text'    : test.debug_text,
@@ -64,18 +64,17 @@ class ChallengeTest(models.Model):
     def run_test(self, source):
         """Run the given source in the ChallengeTest's harness."""
         try:
-            handle = tempfile.NamedTemporaryFile(delete=False)
-            handle.write(
-                self.harness.replace("$CODE$", source).encode('utf-8')
-            )
+            handle = tempfile.NamedTemporaryFile(mode="w+", delete=False)
+            handle.write(self.harness.replace("$CODE$", source))
             handle.close()
             output = subprocess.check_output(
                 ["python3", handle.name], 
                 stderr=subprocess.STDOUT, 
+                universal_newlines=True,
                 timeout=15
             )
-        except subprocess.CalledProcessError:
-            return "Runtime error"
+        except subprocess.CalledProcessError as e:
+            return "Runtime Error: " + e.output
         except subprocess.TimeoutExpired:
             return "Process timed out"
         finally:
