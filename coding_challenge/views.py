@@ -27,7 +27,7 @@ class LeaderBoard(ListView):
 
 class ViewChallenge(LoginRequiredMixin, View):
     def get(self, request, cid):
-        challenge = get_object_or_404(Challenge, pk=cid)
+        challenge = get_object_or_404(Challenge, pk=cid, ispublished=True)
         attempt, created = ChallengeAttempt.objects.get_or_create(
             challenge=challenge,
             submitter=request.user

@@ -17,7 +17,8 @@ class Challenge(models.Model):
     author_date = models.DateTimeField(auto_now_add=True)
     pub_date    = models.DateTimeField(null=True, blank=True)
     ispublished = models.BooleanField(default=False)
-    
+    time_limit  = models.DurationField(default=datetime.timedelta(hours=24))
+
     def __str__(self):
         return self.name
     
@@ -96,7 +97,8 @@ class ChallengeAttempt(models.Model):
 
     def calc_points(self):
         """Calculate how many points the attempt is worth"""
-        if self.earned_pts != 0:
+        if (self.earned_pts != 0 or self.pass_time > 
+                self.challenge.pub_time + self.challenge.time_limit):
             return self.earned_pts
         tdiff = self.pass_time - self.open_time
         tdiff -= datetime.timedelta(minutes=5)
